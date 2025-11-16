@@ -2,8 +2,20 @@ import 'package:flutter/material.dart';
 import '../profilePage/profile.dart';
 import '../settingPage/setting.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  final pageList = [
+    ProfilePage(title: "Profile"),
+    SettingPage(title: "Settings"),
+  ];
+  int currentIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -12,50 +24,24 @@ class MainPage extends StatelessWidget {
         title: const Text('Main Page'),
         backgroundColor: Colors.red,
       ),
-      body: const Center(
-        child: Text(
-          'Welcome to the Main Page!',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.red.shade50,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // ⚙️ Settings button
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SettingPage(title: 'Settings'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.settings),
-                label: const Text('Settings'),
-              ),
-
-              // 👤 Profile button
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(title: 'Profile'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.person),
-                label: const Text('Profile'),
-              ),
-            ],
-          ),
-        ),
+      body: pageList[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: [
+        BottomNavigationBarItem(icon: Icon(Icons.accessible_forward), label: "accessible_forward"),
+        BottomNavigationBarItem(icon: Icon(Icons.access_time_filled_sharp), label:"access_time_filled_sharp"),
+      ]),
+      drawer: Container(
+        height: double.infinity,
+        width: 240,
+        color: Colors.white,
       ),
     );
+
   }
 }
